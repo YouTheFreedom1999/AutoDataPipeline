@@ -1,0 +1,67 @@
+{
+    "common_command_template": [
+        "../build/RISCV/gem5.debug",
+        "--silent-redirect --redirect-stdout ",
+        "--stdout-file=terminal.stdout --stderr-file=terminal.stderr",
+        "--outdir={output_path}  {input_python} --kernel={kernel}"
+    ],
+    "output_pattern": "./m5out/{group_name}/results_{group_name}_{scan_number}",
+    "stats": [
+        "vector.uilt",
+        "system.cpu.commit.kernelCycles::0",
+        "system.cpu.commit.kernelCycles::1",
+        "system.cpu.commit.kernelCycles::2",
+        "system.cpu.commit.kernelCycles::3",
+        "system.cpu.vsu.utilization",
+        "system.cpu.veu.utilization",
+        "system.cpu.vlsu.utilization",
+    ],
+    "groups": [
+        {
+            "group_name": "vpu_vlsu_mem_latency_test",
+            "group_command_template": [
+                "--param=system.cpu[0].numThreads={numThreads} ",
+                "--param=system.cpu[0].SIQSize={SIQSize}  ",
+                "--param=system.cpu[0].SLSQSize={SLSQSize}  ",
+                "--param=system.cpu[0].VIQSize={VIQSize}  ",
+                "--param=system.cpu[0].VEIQSize={VEIQSize}  ",
+                "--param=system.cpu[0].VLSIQSize={VLSIQSize}  ",
+                "--param=system.cpu[0].numROQEntries={numThreads} ",
+                "--param=system.cpu[0].single_vlsu_port={single_vlsu_port}",
+                "--param=system.cpu[0].vlsu_mem_latency={vlsu_mem_latency}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[0].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[1].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[2].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[3].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[4].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[5].opLat={Veu_opLat}",
+                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[6].opLat={Veu_opLat}",
+            ],
+            "fixed_params": {
+                "numThreads": 4,
+                "SIQSize": 32,
+                "SLSQSize": 32,
+                "VIQSize": 32,
+                "VEIQSize": 32,
+                "VLSIQSize": 32,
+                "numROQEntries": 32,
+                "single_vlsu_port": "True",
+                "input_python": "../configs/example/riscv/k800_fs.py",
+                "kernel": "/home/axe/emu/cmd_gen/gem5/pa-dev/softmax_small_0.riscv"
+            },
+            "variable_params": {
+                "vlsu_mem_latency": {
+                    "start": 5,
+                    "end": 30,
+                    "step": 1
+                },
+                "Veu_opLat": {
+                    "start": 8,
+                    "end": 16,
+                    "step": 2
+                }
+            },
+            "fixed_param_groups": []
+        }
+    ]
+}
