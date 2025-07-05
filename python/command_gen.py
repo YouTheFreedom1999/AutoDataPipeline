@@ -28,7 +28,21 @@ def process_variable_params(variable_params: Dict[str, Any]) -> Dict[str, List[A
     """处理可变参数，包括范围配置"""
     processed_params = {}
     for param, value in variable_params.items():
-        if isinstance(value, dict):
+        if param == "kernel":
+            # print(value)
+            # value 可能为str或者 str的list 根据路径是 文件还是目录 ，获取文件列表 , 找出 所有 .elf 和 .riscv 文件
+            import os
+            if isinstance(value, str):
+                value = [value]
+            processed_params[param] = []
+            for path in value:
+                if os.path.isdir(path):
+                    processed_params[param].extend([os.path.join(path, f) for f in os.listdir(path) if f.endswith('.elf') or f.endswith('.riscv')])
+                elif os.path.isfile(path):
+                    processed_params[param].append(path)
+                else:
+                    print(f"错误：参数 '{param}' 的路径不存在")
+        elif isinstance(value, dict):
             # 处理范围配置
             if 'start' in value and 'end' in value and 'step' in value:
                 start = value['start']
@@ -50,6 +64,7 @@ def process_variable_params(variable_params: Dict[str, Any]) -> Dict[str, List[A
         else:
             # 处理普通值列表
             processed_params[param] = value
+    # print(processed_params)
     return processed_params
 
 def generate_group_commands(group: Dict[str, Any], group_number: int, global_config: Dict[str, Any]) -> List[str]:

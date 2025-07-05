@@ -1,13 +1,19 @@
 {
     "common_command_template": [
-        "../build/RISCV/gem5.debug",
-        "--silent-redirect --redirect-stdout ",
+        "/home/sjh/emu1/gem5/build/RISCV/gem5.debug",
+        "--silent-redirect -r --stdout-file=terminal.stdout",
         "--stdout-file=terminal.stdout --stderr-file=terminal.stderr",
-        "--outdir={output_path}  {input_python} --kernel={kernel}"
+        "--outdir={output_path}  {input_python} ",
+        "--kernel={kernel}",
+        "--cpu-type=RiscvK800CPU --caches ",
+        "--mem-size=2048MB --num-threads={numThreads} ",
+        "--param=system.cpu[0].l0_en=False  ",
+        "--param=system.cpu[0].branchPred.lv1BranchTypePredec=False ",
+        "--param=system.cpu[0].branchPred.lv2BranchTypePredec=False ",
     ],
     "output_pattern": "./m5out/{group_name}/results_{group_name}_{scan_number}",
     "stats": [
-        "vector.uilt",
+        // "vector.util",
         "system.cpu.commit.kernelCycles::0",
         "system.cpu.commit.kernelCycles::1",
         "system.cpu.commit.kernelCycles::2",
@@ -15,10 +21,37 @@
         "system.cpu.vsu.utilization",
         "system.cpu.veu.utilization",
         "system.cpu.vlsu.utilization",
+        "system.cpu.VEIQ_0.TmaNotReady",
+        "system.cpu.VEIQ_1.TmaNotReady",
+        "system.cpu.VEIQ_2.TmaNotReady",
+        "system.cpu.VEIQ_3.TmaNotReady",
+
+        "system.cpu.VLSIQ_0.TmaNotReady",
+        "system.cpu.VLSIQ_1.TmaNotReady",
+        "system.cpu.VLSIQ_2.TmaNotReady",
+        "system.cpu.VLSIQ_3.TmaNotReady",
+
+        "system.cpu.VEIQ_0.TmaOrderCheck",
+        "system.cpu.VEIQ_1.TmaOrderCheck",
+        "system.cpu.VEIQ_2.TmaOrderCheck",
+        "system.cpu.VEIQ_3.TmaOrderCheck",
+
+        "system.cpu.VLSIQ_0.TmaOrderCheck",
+        "system.cpu.VLSIQ_1.TmaOrderCheck",
+        "system.cpu.VLSIQ_2.TmaOrderCheck",
+        "system.cpu.VLSIQ_3.TmaOrderCheck",
+        "system.cpu.ipc",
+        "system.cpu.ipc::0",
+        "system.cpu.ipc::1",
+        "system.cpu.ipc::2",
+        "system.cpu.ipc::3",
+        "simTicks",
+        "hostSeconds",
+        "hostInstRate"
     ],
     "groups": [
         {
-            "group_name": "vpu_vlsu_mem_latency_test",
+            "group_name": "vpu_vlsu_mem_latency_test4",
             "group_command_template": [
                 "--param=system.cpu[0].numThreads={numThreads} ",
                 "--param=system.cpu[0].SIQSize={SIQSize}  ",
@@ -26,40 +59,53 @@
                 "--param=system.cpu[0].VIQSize={VIQSize}  ",
                 "--param=system.cpu[0].VEIQSize={VEIQSize}  ",
                 "--param=system.cpu[0].VLSIQSize={VLSIQSize}  ",
-                "--param=system.cpu[0].numROQEntries={numThreads} ",
+                "--param=system.cpu[0].numROQEntries={numROQEntries} ",
                 "--param=system.cpu[0].single_vlsu_port={single_vlsu_port}",
                 "--param=system.cpu[0].vlsu_mem_latency={vlsu_mem_latency}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[0].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[1].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[2].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[3].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[4].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[5].opLat={Veu_opLat}",
-                "--param=system.cpu[0].veuFuPool.FUList.veu.opList[6].opLat={Veu_opLat}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[0].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[1].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[2].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[3].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[4].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[5].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[6].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[7].opThr={vmemThr}", 
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[8].opThr={vmemThr}",
+                "--param=system.cpu[0].vectorMemfuPool.FUList[0].opList[9].opThr={vmemThr}",
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[0].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[1].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[2].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[3].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[4].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VLoadfuPool.FUList[0].opList[5].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VStorefuPool.FUList[0].opList[0].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VStorefuPool.FUList[0].opList[1].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VStorefuPool.FUList[0].opList[2].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VStorefuPool.FUList[0].opList[3].opThr={vmemThr}" ,
+                "--param=system.cpu[0].VStorefuPool.FUList[0].opList[4].opThr={vmemThr}" ,
+                "--param=system.cpu[0].vsuFuPool.FUList[0].opList[0].opThr={expThr}" 
             ],
             "fixed_params": {
-                "numThreads": 4,
                 "SIQSize": 32,
                 "SLSQSize": 32,
                 "VIQSize": 32,
                 "VEIQSize": 32,
                 "VLSIQSize": 32,
                 "numROQEntries": 32,
-                "single_vlsu_port": "True",
+                "vlsu_mem_latency" : 25,
                 "input_python": "../configs/example/riscv/k800_fs.py",
-                "kernel": "/home/axe/emu/cmd_gen/gem5/pa-dev/softmax_small_0.riscv"
+                "kernel": "/home/sjh/emu1/ai-software/work_cache/build/riscv-test/benchmarks/softmax_2dim_new_618.riscv"
             },
             "variable_params": {
-                "vlsu_mem_latency": {
-                    "start": 5,
-                    "end": 30,
-                    "step": 1
-                },
-                "Veu_opLat": {
-                    "start": 8,
-                    "end": 16,
-                    "step": 2
-                }
+                // "vlsu_mem_latency":{
+                //     "start":5,
+                //     "step":1,
+                //     "end":100
+                // },
+                "expThr": [1 , 2, 3  , 4],
+                "vmemThr": [1],
+                "numThreads":[4],
+                "single_vlsu_port": ["True"]
             },
             "fixed_param_groups": []
         }

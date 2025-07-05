@@ -45,12 +45,12 @@ def push_thread_cmd(cmd_list , skip_run):
     if skip_run:
         return
     task_list = []
+    executor = ThreadPoolExecutor(max_workers=16)
     for idx in range(len(cmd_list)):
-        executor = ThreadPoolExecutor(max_workers=64) 
         print_color_text("[pa-dev]" ,'red')
         print_color_text(f" PUSH task({idx}/{len(cmd_list)}) to execute \r" ,'magenta')
-        # task_list.append(executor.submit(execute_command , cmd_list[idx]))
-        print(cmd_list[idx])
+        task_list.append(executor.submit(execute_command , cmd_list[idx]))
+        # print(cmd_list[idx])
         print()
 
     finish = 1

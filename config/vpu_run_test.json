@@ -1,0 +1,37 @@
+{
+    "common_command_template":[ 
+        "/home/sjh/emu_2025_0731/xpu_sim/build/RISCV/gem5.debug",
+        "--silent-redirect --redirect-stdout ",
+        "--stdout-file=terminal.stdout --stderr-file=terminal.stderr",
+        "--outdir={output_path}  {input_python} --kernel={kernel}"
+        ],
+    "output_pattern": "./m5out/{group_name}/results_{group_name}_{scan_number}",
+    "stats":[],
+    "groups": [ // 可以定义多个group : 可以在output_pattern中引用 scan_num group_name  ;scan_num 从0开始 遍历所有可能数
+        {
+            "group_name": "cpu_test",
+            "group_command_template": [ // 在字符串中可以使用list 或者 str ， {} 代表后续变量替换位置 ，等价于 python 中f'{a}'
+                "--vpu-numThreads={numThreads} ",
+                "--cpu-type=K1000CPUV0 ",
+                "--caches ",
+                "--diffLibPath=/home/sjh/emu_2025_0731/rvv-spike/difftest/build/riscv64-spike-so ",
+                "--mem-type=DDR4_2400_8x8 ",
+                "--mem-size=128MiB ",
+                "--bare-metal"
+            ],
+            "fixed_params": {
+                "input_python": "/home/sjh/emu_2025_0731/xpu_sim/configs/example/riscv/k1000_sim_run.py"
+            },
+            "variable_params": {
+                "numThreads" : [1],
+                "kernel" : [
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/microbench-single/gen",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/cpu-tests/build",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark_multi_thread/gen/coremark-1.elf"
+                ]
+            },
+            "fixed_param_groups": []
+        }
+    ]
+}
+
