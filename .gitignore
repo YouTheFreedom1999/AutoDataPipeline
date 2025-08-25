@@ -1,4 +1,5 @@
 backup
-m5oout
+m5out
 report 
 python/__pycache__
+*.log
