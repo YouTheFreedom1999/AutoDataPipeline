@@ -9,6 +9,7 @@ pattern1 = r"Exiting @ tick \d+ because m5_exit instruction encountered"
 pattern2 = r"Exiting @ tick \d+ because m5_fail instruction encountered"
 pattern3 = r"Exiting @ tick \d+ because Error Stop!"
 pattern4 = r"Exiting @ tick \d+ because all threads have halted"
+pattern5 = r"Exiting @ tick \d+ because simulation finished"
 
 decimal_num_pattern = r'\d+'
 
@@ -34,11 +35,11 @@ def parse_statfile(config, stats_find_list):
 
     with open(os.path.join(output_dir, "terminal.stdout"), 'r') as file:
         for line in file:
-            if re.search(pattern0, line) or re.search(pattern1 , line) or re.search(pattern4, line):
+            if re.search(pattern0, line) or re.search(pattern1 , line) or re.search(pattern4, line) or re.search(pattern5, line):
                 stats_dict["processStatus"] = "NormalStop"
                 break
             elif 'gem5 has encountered a segmentation fault!' in line:
-                stats_dict["processStatus"] = "*SegMentFault"
+                stats_dict["proce   ssStatus"] = "*SegMentFault"
                 break
             elif "panic" in line:
                 stats_dict["processStatus"] = "***Panic"

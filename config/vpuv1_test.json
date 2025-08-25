@@ -1,0 +1,43 @@
+{
+    "common_command_template":[ 
+        "/home/sjh/emu_2025_0731/xpu_sim/build/RISCV/gem5.debug",
+        "--silent-redirect --redirect-stdout ",
+        "--stdout-file=terminal.stdout --stderr-file=terminal.stderr",
+        "--outdir={output_path}  {input_python} --kernel={kernel}"
+        ],
+    "output_pattern": "./m5out/{group_name}/results_{group_name}_{scan_number}",
+    "stats":[],
+    "groups": [ // 可以定义多个group : 可以在output_pattern中引用 scan_num group_name  ;scan_num 从0开始 遍历所有可能数
+        {
+            "group_name": "vpuv1_test",
+            "group_command_template": [ // 在字符串中可以使用list 或者 str ， {} 代表后续变量替换位置 ，等价于 python 中f'{a}'
+                "--only-vpu ",
+                "--vpu-type=vpuv1 "
+            ],
+            "fixed_params": {
+                "input_python": "/home/sjh/emu_2025_0731/xpu_sim/src/xpu/python/stdlib_k1000_sim_run.py"
+            },
+            "variable_params": {
+                "kernel" : [
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/cpu/riscv-test/build",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/cpu/cpu-tests/build",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/microbench-single/gen",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/cpu-tests/build",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/dhrystone/build/dhrystone.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-1.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-2.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-3.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-4.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-5.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-6.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-7.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-8.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-9.elf",
+                    "/home/sjh/emu_2025_0731/gem5-test-set/kernel/benchmarks/coremark/gen/coremark-10.elf",
+                ]
+            },
+            "fixed_param_groups": []
+        }
+    ]
+}
+
