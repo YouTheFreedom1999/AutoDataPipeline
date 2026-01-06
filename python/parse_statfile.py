@@ -4,6 +4,7 @@ import re
 import json5
 from k800_tma import *
 from vector_util_plot import vector_util_plot
+from tpu_util import tpu_collect
 pattern0 = r"Exiting @ tick \d+ because Normal Stop!"
 pattern1 = r"Exiting @ tick \d+ because m5_exit instruction encountered"
 pattern2 = r"Exiting @ tick \d+ because m5_fail instruction encountered"
@@ -90,6 +91,9 @@ def parse_statfile(config, stats_find_list):
     
     if "vector.util" in stats_find_list:
         stats_dict["vector.util"] = vector_util_plot(output_dir)
+    
+    if "tpu.util" in stats_find_list:
+        stats_dict["tpu.util"] = tpu_collect(output_dir)
 
     return stats_dict
 
